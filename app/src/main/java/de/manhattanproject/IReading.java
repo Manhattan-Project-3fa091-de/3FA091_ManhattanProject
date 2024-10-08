@@ -1,9 +1,11 @@
 package de.manhattanproject;
 
-interface IReading {
+import java.time.LocalDate;
+
+interface IReading extends IID {
     public void setComment(String comment);
     public void setCustomer(ICustomer customer);
-    public void setDateOfReading(LoclaDate dateOfReading);
+    public void setDateOfReading(LocalDate dateOfReading);
     public void setKindOfMeter(KindOfMeter kindOfMeter);
     public void setMeterCount(double meterCount);
     public void setMeterId(String meterId);
