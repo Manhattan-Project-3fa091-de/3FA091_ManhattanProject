@@ -1,12 +1,12 @@
 CREATE TABLE reading(
-    id UUID,
+    id BINARY(16) PRIMARY KEY,
     comment VARCHAR(32),
     /*customer id INT,*/
     dateOfReading DATETIME,
     kindOfMeter INT,
-    meterCount FLOAT,
+    meterCount DOUBLE(4,2),
     meterId VARCHAR(32),
-    substitute BOOLEAN,
+    substitute BOOLEAN
 
     /*
     FOREIGN KEY(id) REFERENCES(customer.id)

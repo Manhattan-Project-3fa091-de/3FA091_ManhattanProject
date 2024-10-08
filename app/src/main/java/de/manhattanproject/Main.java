@@ -5,9 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import java.sql.SQLException;
-import java.sql.DriverManager;
-import java.sql.Connection;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,25 +13,20 @@ public class Main {
         System.out.println((t.getId()).toString());
         System.out.println(Gender.M);
 
-        //Properties
-        String dbUrl = "";
-        String dbUser = "";
-        String dbPass = "";
         try (InputStream input = new FileInputStream(".properties")) {
-            Properties prop = new Properties();
-            prop.load(input);
-            dbUrl = prop.getProperty("db.url");
-            dbUser = prop.getProperty("db.user");
-            dbPass = prop.getProperty("db.pass");
+            System.out.println("Loading properties...");
+            Properties props = new Properties();
+            props.load(input);
+            DatabaseConnection conn = new DatabaseConnection();
+            System.out.println("Connecting to database...");
+            conn.openConnection(props);
+            System.out.println("Truncating tables...");
+            conn.truncateAllTables();
+            System.out.println("Creating tables...");
+            conn.createAllTables();
+            System.out.println("Closing database connection...");
+            conn.closeConnection();
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //DB
-        try {
-            Connection con = DriverManager.getConnection(dbUrl, dbUser, dbPass);
-            con.close();
-        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
