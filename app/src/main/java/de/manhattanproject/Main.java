@@ -20,10 +20,12 @@ public class Main {
             DatabaseConnection conn = new DatabaseConnection();
             System.out.println("Connecting to database...");
             conn.openConnection(props);
-            System.out.println("Truncating tables...");
-            conn.truncateAllTables();
-            System.out.println("Creating tables...");
-            conn.createAllTables();
+            //System.out.println("Truncating tables...");
+            //conn.truncateAllTables();
+            System.out.println("Dropping tables...");
+            conn.removeAllTables();
+            //System.out.println("Creating tables...");
+            //conn.createAllTables();
             System.out.println("Closing database connection...");
             conn.closeConnection();
         } catch (IOException e) {

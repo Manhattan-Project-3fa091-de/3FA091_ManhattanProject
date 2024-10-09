@@ -61,24 +61,34 @@ public class DatabaseConnection implements IDatabaseConnection {
         //stmt.execute("SET FOREIGN_KEY_CHECKS=0;");
         try (PreparedStatement stmt = this._conn.prepareStatement("SELECT table_name FROM information_schema.tables WHERE table_schema=?")) {
             String catalog = this._conn.getCatalog();
-            System.out.println(catalog);
             stmt.setString(1, catalog);
             ResultSet rs = stmt.executeQuery();
-            System.out.println(rs);
             while (rs.next()) {
                 String table = rs.getString("table_name");
                 System.out.println(table);
-                //TODO: Truncate tables
+                PreparedStatement stmtDrop = this._conn.prepareStatement("TRUNCATE TABLE "+table);
+                stmtDrop.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
     }
 
     @Override
     public void removeAllTables() {
-        throw new UnsupportedOperationException("Unimplemented method 'removeAllTables'");
+        try (PreparedStatement stmt = this._conn.prepareStatement("SELECT table_name FROM information_schema.tables WHERE table_schema=?")) {
+            String catalog = this._conn.getCatalog();
+            stmt.setString(1, catalog);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String table = rs.getString("table_name");
+                System.out.println(table);
+                PreparedStatement stmtDrop = this._conn.prepareStatement("DROP TABLE "+table);
+                stmtDrop.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
