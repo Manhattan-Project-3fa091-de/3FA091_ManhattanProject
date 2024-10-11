@@ -30,6 +30,7 @@ public class Main {
             System.out.println("Creating tables...");
             conn.createAllTables();
 
+            //Create customer
             System.out.println("Creating customer...");
             de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
             customer.setId(UUID.randomUUID());
@@ -37,8 +38,18 @@ public class Main {
             customer.setLastName("Peter");
             customer.setBirthDate(LocalDate.now());
             customer.setGender(Gender.M);
+            //Save customer
+            System.out.println("Saving customer...");
             de.manhattanproject.db.Customer customerDB = new de.manhattanproject.db.Customer(conn);
             customerDB.save(customer);
+
+            //Create reading
+            System.out.println("Creating reading...");
+            Reading reading = new Reading();
+            //Save reading
+            System.out.println("Saving reading...");
+            de.manhattanproject.model.Reading readingDB = new de.manhattanproject.model.Reading(conn);
+            readingDB.save(reading);
 
             System.out.println("Closing database connection...");
             conn.closeConnection();
