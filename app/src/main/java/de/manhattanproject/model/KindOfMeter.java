@@ -1,4 +1,4 @@
-package de.manhattanproject;
+package de.manhattanproject.model;
 
 enum KindOfMeter {
     HEIZUNG,
