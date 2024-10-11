@@ -2,6 +2,6 @@ CREATE TABLE customer(
     id BINARY(16) PRIMARY KEY,
     firstName VARCHAR(32),
     lastName VARCHAR(32),
-    birthDate DATETIME,
+    birthDate DATE,
     gender INT
 );

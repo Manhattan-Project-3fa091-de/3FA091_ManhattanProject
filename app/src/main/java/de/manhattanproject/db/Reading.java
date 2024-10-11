@@ -3,24 +3,23 @@ package de.manhattanproject.db;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 
-class Reading implements IDatabaseInteraction<Reading> {
+public class Reading implements IDatabaseInteraction<de.manhattanproject.model.Reading> {
     Reading(DatabaseConnection db) {
         this._db = db;
     }
-    public void save(Reading reading) {
+    public void save(de.manhattanproject.model.Reading reading) {
         try (PreparedStatement stmt = (this._db.getConnection()).prepareStatement("INSERT INTO reading() VALUES()")) {
-            stmt.setString(1, reading.getId());
-            stmt.setString(2, reading.getFirstName());
-            stmt.setString(3, reading.getLastName());
-            stmt.setString(4, reading.getBirthDate());
-            stmt.setString(5, reading.getGender());
+            
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    public void delete() {
-
+    public void load(de.manhattanproject.model.Reading reading) {
+        return;
+    }
+    public void delete(de.manhattanproject.model.Reading reading) {
+        return;
     }
     private DatabaseConnection _db;
 }

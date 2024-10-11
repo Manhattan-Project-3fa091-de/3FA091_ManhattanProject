@@ -1,4 +1,4 @@
-package de.manhattanproject;
+package de.manhattanproject.model;
 
 import java.time.LocalDate;
 

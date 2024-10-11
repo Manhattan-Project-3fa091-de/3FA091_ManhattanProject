@@ -1,9 +1,9 @@
 package de.manhattanproject.db;
 
-import java.util.ByteBuffer;
+import java.nio.ByteBuffer;
 
 class UUID {
-    private static byte[] asBytes(UUID uuid) {
+    public static byte[] asBytes(java.util.UUID uuid) {
         ByteBuffer bb = ByteBuffer.allocate(16);
         bb.putLong(uuid.getMostSignificantBits());
         bb.putLong(uuid.getLeastSignificantBits());

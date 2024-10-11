@@ -1,8 +1,8 @@
-package de.manhattanproject;
+package de.manhattanproject.model;
 
 import java.util.UUID;
 
-interface IID {
+public interface IID {
     public UUID getId();
     public void setId(UUID id);
 }

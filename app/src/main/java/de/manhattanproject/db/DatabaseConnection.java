@@ -23,7 +23,7 @@ public class DatabaseConnection implements IDatabaseConnection {
 
         //DB
         try {
-            if (this._conn.isValid(1000)) {
+            if (this._conn != null) {
                 return this;
             }
             this._conn = DriverManager.getConnection(this._dbUrl, this._dbUser, this._dbPass);
@@ -72,7 +72,6 @@ public class DatabaseConnection implements IDatabaseConnection {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 String table = rs.getString("table_name");
-                System.out.println(table);
                 PreparedStatement stmtDrop = this._conn.prepareStatement("TRUNCATE TABLE "+table);
                 stmtDrop.executeUpdate();
             }
@@ -89,7 +88,6 @@ public class DatabaseConnection implements IDatabaseConnection {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 String table = rs.getString("table_name");
-                System.out.println(table);
                 PreparedStatement stmtDrop = this._conn.prepareStatement("DROP TABLE "+table);
                 stmtDrop.executeUpdate();
             }
