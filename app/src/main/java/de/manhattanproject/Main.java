@@ -24,8 +24,12 @@ public class Main {
             //conn.truncateAllTables();
             System.out.println("Dropping tables...");
             conn.removeAllTables();
-            //System.out.println("Creating tables...");
-            //conn.createAllTables();
+            System.out.println("Creating tables...");
+            conn.createAllTables();
+
+            System.out.println("Creating customer...");
+            
+
             System.out.println("Closing database connection...");
             conn.closeConnection();
         } catch (IOException e) {
