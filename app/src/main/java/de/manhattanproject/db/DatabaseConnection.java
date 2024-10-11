@@ -1,4 +1,4 @@
-package de.manhattanproject;
+package de.manhattanproject.db;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,12 +23,19 @@ public class DatabaseConnection implements IDatabaseConnection {
 
         //DB
         try {
+            if (this._conn.isValid(1000)) {
+                return this;
+            }
             this._conn = DriverManager.getConnection(this._dbUrl, this._dbUser, this._dbPass);
         } catch (SQLException e) {
             e.printStackTrace();
-            return this;
+            return null;
         }
-        return null;
+        return this;
+    }
+
+    public Connection getConnection() {
+        return this._conn;
     }
 
     @Override

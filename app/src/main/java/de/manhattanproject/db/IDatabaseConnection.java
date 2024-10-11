@@ -1,4 +1,4 @@
-package de.manhattanproject;
+package de.manhattanproject.db;
 
 import java.util.Properties;
 

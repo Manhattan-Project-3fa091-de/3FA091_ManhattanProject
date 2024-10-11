@@ -1,17 +1,20 @@
 package de.manhattanproject.db;
 
-import de.manhattanproject;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.util.UUID;
+import de.manhattanproject.db.IDatabaseConnection;
 
-class Customer implements IDatabaseInteraction {
-    Customer(DatabaseConnection conn) {
-        this._conn = conn;
+class Customer implements IDatabaseInteraction<de.manhattanproject.Customer> {
+    Customer(DatabaseConnection db) {
+        this._db = db;
     }
-    public void save(Customer customer) {
-        try (PreparedStatement stmt = this._conn.prepareStatement("INSERT INTO customer(id, firstName, lastName, birthDate, gender) VALUES(?,?,?,?,?)")) {
-            stmt.setString(1, customer.getId());
+    public void save(de.manhattanproject.Customer customer) {
+        try (PreparedStatement stmt = (this._db.getConnection()).prepareStatement("INSERT INTO customer(id, firstName, lastName, birthDate, gender) VALUES(?,?,?,?,?)")) {
+            stmt.setBytes(1, UUID.asBytes(customer.getId()));
             stmt.setString(2, customer.getFirstName());
             stmt.setString(3, customer.getLastName());
-            stmt.setString(4, customer.getBirthDate());
+            stmt.setTimestamp(4, Timestamp.valueOf(customer.getBirthDate()));
             stmt.setString(5, customer.getGender());
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -21,5 +24,5 @@ class Customer implements IDatabaseInteraction {
     public void delete() {
 
     }
-    private DatabaseConnection _conn;
+    private DatabaseConnection _db;
 }
