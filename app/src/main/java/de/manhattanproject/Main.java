@@ -45,10 +45,15 @@ public class Main {
 
             //Create reading
             System.out.println("Creating reading...");
-            Reading reading = new Reading();
+            de.manhattanproject.model.Reading reading = new de.manhattanproject.model.Reading();
+            reading.setId(UUID.randomUUID());
+            reading.setComment("Important note");
+            reading.setCustomer(customer);
+            reading.setDateOfReading(LocalDate.now());
+            reading.setKindOfMeter();
             //Save reading
             System.out.println("Saving reading...");
-            de.manhattanproject.model.Reading readingDB = new de.manhattanproject.model.Reading(conn);
+            de.manhattanproject.db.Reading readingDB = new de.manhattanproject.db.Reading(conn);
             readingDB.save(reading);
 
             System.out.println("Closing database connection...");
