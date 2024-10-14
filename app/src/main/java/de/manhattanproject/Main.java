@@ -9,6 +9,7 @@ import de.manhattanproject.db.DatabaseConnection;
 //import de.manhattanproject.Customer;
 //import de.manhattanproject.db.Customer;
 import de.manhattanproject.model.Gender;
+import de.manhattanproject.model.KindOfMeter;
 import java.time.LocalDate;
 
 public class Main {
@@ -25,10 +26,10 @@ public class Main {
             conn.openConnection(props);
             //System.out.println("Truncating tables...");
             //conn.truncateAllTables();
-            System.out.println("Dropping tables...");
-            conn.removeAllTables();
-            System.out.println("Creating tables...");
-            conn.createAllTables();
+            //System.out.println("Dropping tables...");
+            //conn.removeAllTables();
+            //System.out.println("Creating tables...");
+            //conn.createAllTables();
 
             //Create customer
             System.out.println("Creating customer...");
@@ -50,7 +51,9 @@ public class Main {
             reading.setComment("Important note");
             reading.setCustomer(customer);
             reading.setDateOfReading(LocalDate.now());
-            reading.setKindOfMeter();
+            reading.setKindOfMeter(KindOfMeter.HEIZUNG);
+            reading.setMeterCount(1.2);
+            reading.setSubstitute(true);
             //Save reading
             System.out.println("Saving reading...");
             de.manhattanproject.db.Reading readingDB = new de.manhattanproject.db.Reading(conn);
