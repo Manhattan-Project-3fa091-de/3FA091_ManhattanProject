@@ -26,10 +26,10 @@ public class Main {
             conn.openConnection(props);
             //System.out.println("Truncating tables...");
             //conn.truncateAllTables();
-            //System.out.println("Dropping tables...");
-            //conn.removeAllTables();
-            //System.out.println("Creating tables...");
-            //conn.createAllTables();
+            System.out.println("Dropping tables...");
+            conn.removeAllTables();
+            System.out.println("Creating tables...");
+            conn.createAllTables();
 
             //Create customer
             System.out.println("Creating customer...");
@@ -56,6 +56,7 @@ public class Main {
             reading.setDateOfReading(LocalDate.now());
             reading.setKindOfMeter(KindOfMeter.HEIZUNG);
             reading.setMeterCount(1.2);
+            reading.setMeterId("Meow");
             reading.setSubstitute(true);
             //Save reading
             System.out.println("Saving reading...");
@@ -64,6 +65,13 @@ public class Main {
             //Load reading
             System.out.println("Loading reading...");
             de.manhattanproject.model.Reading readingLoad = readingDB.load(reading);
+
+            //Delete customer
+            System.out.println("Deleting customer...");
+            customerDB.delete(customer);
+
+            //System.out.println("Deleting reading...");
+            //readingDB.delete(reading);
 
             System.out.println("Closing database connection...");
             conn.closeConnection();

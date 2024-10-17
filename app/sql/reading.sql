@@ -6,8 +6,6 @@ CREATE TABLE reading(
     kindOfMeter INT,
     meterCount DOUBLE(4,2),
     meterId VARCHAR(32),
-    substitute BOOLEAN,
-
-    FOREIGN KEY(customer_id) REFERENCES customer(id)
-    /*FOREIGN KEY(kindOfMeter) REFERENCES(meter.id)*/
+    substitute BOOLEAN
+    /*FOREIGN KEY(customer_id) REFERENCES customer(id)*/
 );
