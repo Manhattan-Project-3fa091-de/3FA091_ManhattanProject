@@ -43,6 +43,9 @@ public class Main {
             System.out.println("Saving customer...");
             de.manhattanproject.db.Customer customerDB = new de.manhattanproject.db.Customer(conn);
             customerDB.save(customer);
+            //Load customer
+            System.out.println("Reading customer...");
+            de.manhattanproject.model.Customer customerLoad = customerDB.load(customer);
 
             //Create reading
             System.out.println("Creating reading...");
@@ -58,6 +61,9 @@ public class Main {
             System.out.println("Saving reading...");
             de.manhattanproject.db.Reading readingDB = new de.manhattanproject.db.Reading(conn);
             readingDB.save(reading);
+            //Load reading
+            System.out.println("Loading reading...");
+            de.manhattanproject.model.Reading readingLoad = readingDB.load(reading);
 
             System.out.println("Closing database connection...");
             conn.closeConnection();
