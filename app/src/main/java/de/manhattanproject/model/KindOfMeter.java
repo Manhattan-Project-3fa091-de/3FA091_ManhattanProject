@@ -1,6 +1,6 @@
 package de.manhattanproject.model;
 
-enum KindOfMeter {
+public enum KindOfMeter {
     HEIZUNG,
     STROM,
     WASSER,

@@ -2,7 +2,7 @@ package de.manhattanproject.model;
 
 import java.time.LocalDate;
 
-interface ICustomer extends IID {
+public interface ICustomer extends IID {
     public void setFirstName(String firstName);
     public void setLastName(String lastName);
     public void setBirthDate(LocalDate birthDate);
