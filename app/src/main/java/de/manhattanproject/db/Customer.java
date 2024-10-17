@@ -48,7 +48,13 @@ public class Customer implements IDatabaseInteraction<de.manhattanproject.model.
     }
     @Override
     public void delete(de.manhattanproject.model.Customer customer) {
-        return;
+        try (PreparedStatement stmt = (this._db.getConnection().prepareStatement("DELETE FROM customer WHERE id=?"))) {
+            stmt.setBytes(1, UUID.asBytes(customer.getId()));
+            int rc = stmt.executeUpdate();
+            //System.out.println("Rows affected: "+rc);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     private DatabaseConnection _db;
 }
