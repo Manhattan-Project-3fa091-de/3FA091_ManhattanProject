@@ -139,6 +139,7 @@ public class CustomerTest extends TestCase {
             PreparedStatement stmt = this._db.getConnection().prepareStatement("SELECT customer_id FROM reading WHERE id=?");
             stmt.setBytes(1, de.manhattanproject.db.UUID.toBytes(this._readingId));
             ResultSet rs = stmt.executeQuery();
+            this._db.getConnection().commit();
             if (!rs.next()) {
                 assertTrue(false);
             }
