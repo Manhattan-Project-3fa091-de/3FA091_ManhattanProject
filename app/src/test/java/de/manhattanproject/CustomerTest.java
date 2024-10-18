@@ -58,8 +58,8 @@ public class CustomerTest extends TestCase {
         customer.setGender(Gender.M);
 
         //Save customer
+        System.out.println("Saving customer...");
         try {
-            System.out.println("Saving customer...");
             de.manhattanproject.db.Customer customerDB = new de.manhattanproject.db.Customer(this._db);
             customerDB.save(customer);
         } catch (SQLException | NullPointerException e) {
@@ -83,8 +83,8 @@ public class CustomerTest extends TestCase {
         customer.setGender(Gender.M);
 
         //Save customer
+        System.out.println("Saving customer...");
         try {
-            System.out.println("Saving customer...");
             de.manhattanproject.db.Customer customerDB = new de.manhattanproject.db.Customer(this._db);
             customerDB.save(customer);
         } catch (SQLException | NullPointerException e) {
@@ -134,11 +134,12 @@ public class CustomerTest extends TestCase {
         }
 
         //Get all readings by customer id using previously created customer
+        System.out.println("Loading reading...");
         try {
-            System.out.println("Loading reading...");
             PreparedStatement stmt = this._db.getConnection().prepareStatement("SELECT customer_id FROM reading WHERE id=?");
             stmt.setBytes(1, de.manhattanproject.db.UUID.toBytes(this._readingId));
             ResultSet rs = stmt.executeQuery();
+            this._db.getConnection().commit();
             if (!rs.next()) {
                 assertTrue(false);
             }

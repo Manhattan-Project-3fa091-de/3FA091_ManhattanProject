@@ -68,8 +68,8 @@ public class ReadingTest extends TestCase {
         reading.setSubstitute(true);
 
         //Save reading
+        System.out.println("Saving reading...");
         try {
-            System.out.println("Saving reading...");
             de.manhattanproject.db.Reading readingDB = new de.manhattanproject.db.Reading(this._db);
             readingDB.save(reading);
         } catch (SQLException | NullPointerException e) {
@@ -77,6 +77,17 @@ public class ReadingTest extends TestCase {
             assertTrue(false);
         } catch (Exception e) {
             e.printStackTrace();
+            assertTrue(false);
+        }
+
+        //Load customer
+        System.out.println("Loading customer...");
+        try {
+            de.manhattanproject.db.Customer customerDB = new de.manhattanproject.db.Customer(this._db);
+            de.manhattanproject.model.Customer customerLoad = customerDB.load(customer);
+            assertNotNull(customerLoad);
+        } catch (Exception e) {
+            System.err.println("Failed to load customer: "+e.toString());
             assertTrue(false);
         }
     }
@@ -96,9 +107,10 @@ public class ReadingTest extends TestCase {
         reading.setSubstitute(true);
 
         //Save reading
+        System.out.println("Saving reading...");
+        de.manhattanproject.db.Reading readingDB = null;
         try {
-            System.out.println("Saving reading...");
-            de.manhattanproject.db.Reading readingDB = new de.manhattanproject.db.Reading(this._db);
+            readingDB = new de.manhattanproject.db.Reading(this._db);
             readingDB.save(reading);
             assertTrue(false);
         } catch (SQLException | NullPointerException e) {
@@ -146,8 +158,8 @@ public class ReadingTest extends TestCase {
         }
 
         //Load reading
+        System.out.println("Loading reading...");
         try {
-            System.out.println("Loading reading...");
             de.manhattanproject.model.Reading readingLoad = readingDB.load(reading);
             assertNotNull(readingLoad);
         } catch (Exception e) {
