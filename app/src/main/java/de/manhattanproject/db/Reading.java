@@ -19,8 +19,28 @@ public class Reading implements IDatabaseInteraction<de.manhattanproject.model.R
             throw new NullPointerException("Customer not set");
         }
 
+        //Create customer if non-exsistent
+        ResultSet rs = null;
+        try (PreparedStatement stmt = this._db.getConnection().prepareStatement("SELECT id FROM customer LIMIT 1")) {
+            rs = stmt.executeQuery();
+        } catch (Exception e) {
+            throw e;
+        }
+        if (!rs.next()) {
+            try (PreparedStatement stmt = this._db.getConnection().prepareStatement("INSERT INTO customer(id, firstName, lastName, birthDate, gender) VALUES(?,?,?,?,?)")) {
+                stmt.setBytes(1, UUID.toBytes(reading.getCustomer().getId()));
+                stmt.setString(2, reading.getCustomer().getFirstName());
+                stmt.setString(3, reading.getCustomer().getLastName());
+                stmt.setDate(4, Date.valueOf(reading.getCustomer().getBirthDate()));
+                stmt.setInt(5, reading.getCustomer().getGender().ordinal());
+                stmt.executeUpdate();
+            } catch (Exception e) {
+                throw e;
+            }
+        }
+
         //Save reading
-        try (PreparedStatement stmt = (this._db.getConnection()).prepareStatement("INSERT INTO reading(id, comment, customer_id, dateOfReading, kindOfMeter, meterCount, meterId, substitute) VALUES(?,?,?,?,?,?,?,?)")) {
+        try (PreparedStatement stmt = this._db.getConnection().prepareStatement("INSERT INTO reading(id, comment, customer_id, dateOfReading, kindOfMeter, meterCount, meterId, substitute) VALUES(?,?,?,?,?,?,?,?)")) {
             stmt.setBytes(1, UUID.toBytes(reading.getId()));
             stmt.setString(2, reading.getComment());
             stmt.setBytes(3, UUID.toBytes((reading.getCustomer()).getId()));
@@ -42,7 +62,7 @@ public class Reading implements IDatabaseInteraction<de.manhattanproject.model.R
         de.manhattanproject.model.Reading readingRes = new de.manhattanproject.model.Reading();
 
         //Load reading
-        try (PreparedStatement stmt = (this._db.getConnection().prepareStatement("SELECT id, comment, customer_id, dateOfReading, kindOfMeter, meterCount, meterId, substitute FROM reading WHERE id=? LIMIT 1"))) {
+        try (PreparedStatement stmt = this._db.getConnection().prepareStatement("SELECT id, comment, customer_id, dateOfReading, kindOfMeter, meterCount, meterId, substitute FROM reading WHERE id=? LIMIT 1")) {
             stmt.setBytes(1, UUID.toBytes(reading.getId()));
             ResultSet rs = stmt.executeQuery();
             if (!rs.next()) {
@@ -67,7 +87,7 @@ public class Reading implements IDatabaseInteraction<de.manhattanproject.model.R
         }
 
         //Load customer from customer ID of reading
-        try (PreparedStatement stmt = (this._db.getConnection().prepareStatement("SELECT id, firstName, lastName, birthDate, gender FROM customer WHERE id=? LIMIT 1"))) {
+        try (PreparedStatement stmt = this._db.getConnection().prepareStatement("SELECT id, firstName, lastName, birthDate, gender FROM customer WHERE id=? LIMIT 1")) {
             stmt.setBytes(1, customerId);
 
             ResultSet rsCustomer = stmt.executeQuery();
@@ -94,7 +114,7 @@ public class Reading implements IDatabaseInteraction<de.manhattanproject.model.R
 
     @Override
     public void delete(de.manhattanproject.model.Reading reading) {
-        try (PreparedStatement stmt = (this._db.getConnection().prepareStatement("DELETE FROM reading WHERE id=?"))) {
+        try (PreparedStatement stmt = this._db.getConnection().prepareStatement("DELETE FROM reading WHERE id=?")) {
             stmt.setBytes(1, UUID.toBytes(reading.getId()));
             stmt.executeUpdate();
         } catch (SQLException e) {

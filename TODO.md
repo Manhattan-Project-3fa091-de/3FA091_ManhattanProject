@@ -1,3 +1,5 @@
 - Make sure customer is created when saving a reading but the customer doesn't yet exist.
 - Remove table only if exists?
 - Dynamic SQL query filter generation depending on model class attributes in `load()` method of classes implementing `IDatabaseInteraction` interface. (Currently only filtering by ID.)
+- Add bigger commit scope for `save()`.
+- Change `Statement` to `PreparedStatement`.
