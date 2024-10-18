@@ -67,7 +67,7 @@ public class Reading implements IDatabaseInteraction<de.manhattanproject.model.R
         }
 
         //Load customer from customer ID of reading
-        try (PreparedStatement stmt = (this._db.getConnection().prepareStatement("SELECT id, firstName, lastName, birthDate, gender FROM customer WHERE id=?"))) {
+        try (PreparedStatement stmt = (this._db.getConnection().prepareStatement("SELECT id, firstName, lastName, birthDate, gender FROM customer WHERE id=? LIMIT 1"))) {
             stmt.setBytes(1, customerId);
 
             ResultSet rsCustomer = stmt.executeQuery();
