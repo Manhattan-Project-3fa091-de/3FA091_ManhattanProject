@@ -1,2 +1,0 @@
-- Make sure customer is created when saving a reading but the customer doesn't yet exist.
-- Remove table only if exists?

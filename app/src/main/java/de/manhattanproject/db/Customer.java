@@ -13,7 +13,7 @@ public class Customer implements IDatabaseInteraction<de.manhattanproject.model.
 
     @Override
     public void save(de.manhattanproject.model.Customer customer) throws Exception {
-        try (PreparedStatement stmt = (this._db.getConnection()).prepareStatement("INSERT INTO customer(id, firstName, lastName, birthDate, gender) VALUES(?,?,?,?,?)")) {
+        try (PreparedStatement stmt = this._db.getConnection().prepareStatement("INSERT INTO customer(id, firstName, lastName, birthDate, gender) VALUES(?,?,?,?,?)")) {
             stmt.setBytes(1, UUID.toBytes(customer.getId()));
             stmt.setString(2, customer.getFirstName());
             stmt.setString(3, customer.getLastName());
@@ -25,9 +25,10 @@ public class Customer implements IDatabaseInteraction<de.manhattanproject.model.
         }
     }
 
+    //TODO: Dynamic query filter generation depending on class attributes
     @Override
-    public de.manhattanproject.model.Customer load(de.manhattanproject.model.Customer customer) {
-        try (PreparedStatement stmt = (this._db.getConnection().prepareStatement("SELECT id, firstName, lastName, birthDate, gender FROM customer WHERE id=? LIMIT 1"))) {
+    public de.manhattanproject.model.Customer load(de.manhattanproject.model.Customer customer) throws Exception {
+        try (PreparedStatement stmt = this._db.getConnection().prepareStatement("SELECT id, firstName, lastName, birthDate, gender FROM customer WHERE id=? LIMIT 1")) {
             stmt.setBytes(1, UUID.toBytes(customer.getId()));
             ResultSet rs = stmt.executeQuery();
             if (!rs.next()) {
@@ -40,27 +41,21 @@ public class Customer implements IDatabaseInteraction<de.manhattanproject.model.
             customerRes.setBirthDate((rs.getDate(4)).toLocalDate());
             customerRes.setGender(Ordinal.toEnum(Gender.class, rs.getInt(5)));
             return customerRes;
-        } catch (SQLException e) {
-            System.err.println("Failed to execute load customer statement: "+e.toString());
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
-        return null;
     }
 
     @Override
-    public void delete(de.manhattanproject.model.Customer customer) {
-        try (PreparedStatement stmt = (this._db.getConnection().prepareStatement("DELETE FROM customer WHERE id=?"))) {
+    public void delete(de.manhattanproject.model.Customer customer) throws Exception {
+        try (PreparedStatement stmt = this._db.getConnection().prepareStatement("DELETE FROM customer WHERE id=?")) {
             stmt.setBytes(1, UUID.toBytes(customer.getId()));
             stmt.executeUpdate();
-            //TODO: Set all reading "customer"-references to NULL
-            PreparedStatement stmtReading = (this._db.getConnection().prepareStatement("UPDATE reading SET customer_id=NULL WHERE customer_id=?"));
+            PreparedStatement stmtReading = this._db.getConnection().prepareStatement("UPDATE reading SET customer_id=NULL WHERE customer_id=?");
             stmtReading.setBytes(1, UUID.toBytes(customer.getId()));
             stmtReading.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Failed to execute delete customer statement: "+e.toString());
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 
