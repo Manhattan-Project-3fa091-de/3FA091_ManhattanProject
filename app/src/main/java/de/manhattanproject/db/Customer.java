@@ -11,6 +11,7 @@ public class Customer implements IDatabaseInteraction<de.manhattanproject.model.
     public Customer(DatabaseConnection db) {
         this._db = db;
     }
+
     @Override
     public void save(de.manhattanproject.model.Customer customer) {
         try (PreparedStatement stmt = (this._db.getConnection()).prepareStatement("INSERT INTO customer(id, firstName, lastName, birthDate, gender) VALUES(?,?,?,?,?)")) {
@@ -24,9 +25,9 @@ public class Customer implements IDatabaseInteraction<de.manhattanproject.model.
             e.printStackTrace();
         }
     }
+
     @Override
     public de.manhattanproject.model.Customer load(de.manhattanproject.model.Customer customer) {
-        //de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
         try (PreparedStatement stmt = (this._db.getConnection().prepareStatement("SELECT id, firstName, lastName, birthDate, gender FROM customer WHERE id=? LIMIT 1"))) {
             stmt.setBytes(1, UUID.asBytes(customer.getId()));
             ResultSet rs = stmt.executeQuery();
@@ -46,6 +47,7 @@ public class Customer implements IDatabaseInteraction<de.manhattanproject.model.
         }
         return null;
     }
+
     @Override
     public void delete(de.manhattanproject.model.Customer customer) {
         try (PreparedStatement stmt = (this._db.getConnection().prepareStatement("DELETE FROM customer WHERE id=?"))) {
@@ -60,5 +62,7 @@ public class Customer implements IDatabaseInteraction<de.manhattanproject.model.
             e.printStackTrace();
         }
     }
+
     private DatabaseConnection _db;
+    private UUID _customerId;
 }
