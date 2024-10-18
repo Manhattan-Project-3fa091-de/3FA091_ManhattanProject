@@ -106,7 +106,7 @@ public class DatabaseConnection implements IDatabaseConnection {
     }
 
     private Connection _conn;
-    String _dbUrl;
-    String _dbUser;
-    String _dbPass;
+    private String _dbUrl;
+    private String _dbUser;
+    private String _dbPass;
 }

@@ -52,6 +52,10 @@ public class Customer implements IDatabaseInteraction<de.manhattanproject.model.
             stmt.setBytes(1, UUID.asBytes(customer.getId()));
             int rc = stmt.executeUpdate();
             //System.out.println("Rows affected: "+rc);
+            //TODO: Set all reading "customer"-references to NULL
+            PreparedStatement stmtReading = (this._db.getConnection().prepareStatement("UPDATE reading SET customer_id=NULL WHERE customer_id=?"));
+            stmtReading.setBytes(1, UUID.asBytes(customer.getId()));
+            stmtReading.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

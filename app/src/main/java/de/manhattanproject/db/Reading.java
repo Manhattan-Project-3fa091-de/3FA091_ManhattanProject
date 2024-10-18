@@ -5,13 +5,17 @@ import java.sql.PreparedStatement;
 import java.sql.Date;
 import java.sql.ResultSet;
 import de.manhattanproject.model.KindOfMeter;
+import java.util.NoSuchElementException;
 
 public class Reading implements IDatabaseInteraction<de.manhattanproject.model.Reading> {
     public Reading(DatabaseConnection db) {
         this._db = db;
     }
     @Override
-    public void save(de.manhattanproject.model.Reading reading) {
+    public void save(de.manhattanproject.model.Reading reading) throws SQLException, NoSuchElementException {
+        if (reading.getCustomer() == null) {
+            throw new NoSuchElementException("Customer not set");
+        }
         try (PreparedStatement stmt = (this._db.getConnection()).prepareStatement("INSERT INTO reading(id, comment, customer_id, dateOfReading, kindOfMeter, meterCount, meterId, substitute) VALUES(?,?,?,?,?,?,?,?)")) {
             stmt.setBytes(1, UUID.asBytes(reading.getId()));
             stmt.setString(2, reading.getComment());
@@ -23,7 +27,7 @@ public class Reading implements IDatabaseInteraction<de.manhattanproject.model.R
             stmt.setBoolean(8, reading.getSubstitude());
             stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         }
     }
     @Override

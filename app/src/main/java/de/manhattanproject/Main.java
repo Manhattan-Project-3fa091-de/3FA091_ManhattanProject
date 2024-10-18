@@ -3,6 +3,7 @@ package de.manhattanproject;
 import java.util.UUID;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.io.InputStream;
 import java.util.Properties;
 import de.manhattanproject.db.DatabaseConnection;
@@ -11,6 +12,7 @@ import de.manhattanproject.db.DatabaseConnection;
 import de.manhattanproject.model.Gender;
 import de.manhattanproject.model.KindOfMeter;
 import java.time.LocalDate;
+
 
 public class Main {
     public static void main(String[] args) {
@@ -76,6 +78,8 @@ public class Main {
             System.out.println("Closing database connection...");
             conn.closeConnection();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
