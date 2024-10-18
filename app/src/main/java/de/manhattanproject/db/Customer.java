@@ -1,6 +1,5 @@
 package de.manhattanproject.db;
 
-import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.Date;
 import java.sql.ResultSet;
