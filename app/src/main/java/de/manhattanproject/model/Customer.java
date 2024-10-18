@@ -25,6 +25,7 @@ public class Customer implements ICustomer {
     public void setGender(Gender gender) {
         this._gender = gender;
     }
+    
     //Getter
     @Override
     public UUID getId() {
@@ -46,6 +47,7 @@ public class Customer implements ICustomer {
     public Gender getGender() {
         return this._gender;
     }
+
     //Attributes
     private UUID _id;
     private String _firstName;

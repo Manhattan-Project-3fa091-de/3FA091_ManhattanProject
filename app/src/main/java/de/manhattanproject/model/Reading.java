@@ -27,7 +27,7 @@ public class Reading implements IReading {
 	}
     @Override
     public void setMeterCount(double meterCount) {
-        this._meterCount = _meterCount;
+        this._meterCount = meterCount;
 	}
     @Override
     public void setMeterId(String meterId) {
