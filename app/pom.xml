@@ -6,6 +6,10 @@
   <packaging>jar</packaging>
   <version>0.1.0</version>
   <name>app</name>
+  <properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+  </properties>
   <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
