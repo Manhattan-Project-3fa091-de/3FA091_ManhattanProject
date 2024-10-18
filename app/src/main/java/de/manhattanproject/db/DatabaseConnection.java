@@ -9,7 +9,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Properties;
 import java.util.stream.Stream;
 
@@ -29,6 +28,7 @@ public class DatabaseConnection implements IDatabaseConnection {
         //Establish connection
         try {
             this._conn = DriverManager.getConnection(this._dbUrl, this._dbUser, this._dbPass);
+            this._conn.setAutoCommit(false);
         } catch (SQLException e) {
             System.err.println("Failed to get database connection: "+e.toString());
             return null;
@@ -60,20 +60,20 @@ public class DatabaseConnection implements IDatabaseConnection {
                 } catch (IOException e) {
                     System.err.println("Failed to read SQL file: "+e.toString());
                     return;
-                } catch(Exception e) {
-                    e.printStackTrace();
-                    return;
                 }
 
                 //Execute query
                 try {
-                    Statement stmt = this._conn.createStatement();
-                    stmt.executeUpdate(query);
+                    PreparedStatement stmt = this._conn.prepareStatement(query);
+                    stmt.executeUpdate();
+                    this._conn.commit();
                 } catch (SQLException e) {
                     System.err.println("Failed to execute SQL statement: "+e.toString());
-                } catch(Exception e) {
-                    e.printStackTrace();
-                    return;
+                    try {
+                        this._conn.rollback();
+                    } catch (SQLException e2) {
+                        System.err.println("Failed to roll back create table query: "+e2.toString());
+                    }
                 }
             });
         } catch (IOException e) {
@@ -89,6 +89,7 @@ public class DatabaseConnection implements IDatabaseConnection {
             String catalog = this._conn.getCatalog();
             stmt.setString(1, catalog);
             ResultSet rs = stmt.executeQuery();
+            this._conn.commit();
             while (rs.next()) {
                 String table = rs.getString("table_name");
                 PreparedStatement stmtDrop = this._conn.prepareStatement("TRUNCATE TABLE "+table);
@@ -96,6 +97,11 @@ public class DatabaseConnection implements IDatabaseConnection {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            try {
+                this._conn.rollback();
+            } catch (SQLException e2) {
+                System.err.println("Failed to roll back truncate table query: "+e2.toString());
+            }
         }
     }
 
@@ -105,13 +111,20 @@ public class DatabaseConnection implements IDatabaseConnection {
             String catalog = this._conn.getCatalog();
             stmt.setString(1, catalog);
             ResultSet rs = stmt.executeQuery();
+            this._conn.commit();
             while (rs.next()) {
                 String table = rs.getString("table_name");
                 PreparedStatement stmtDrop = this._conn.prepareStatement("DROP TABLE "+table);
                 stmtDrop.executeUpdate();
+                this._conn.commit();
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            try {
+                this._conn.rollback();
+            } catch (SQLException e2) {
+                System.err.println("Failed to roll back create table query: "+e2.toString());
+            }
         }
     }
 
@@ -121,6 +134,11 @@ public class DatabaseConnection implements IDatabaseConnection {
             this._conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
+            try {
+                this._conn.rollback();
+            } catch (SQLException e2) {
+                System.err.println("Failed to roll back create table query: "+e2.toString());
+            }
         }
     }
 
