@@ -4,6 +4,9 @@ import java.nio.ByteBuffer;
 
 class UUID {
     public static byte[] asBytes(java.util.UUID uuid) {
+        if (uuid == null) {
+            return new byte[0];
+        }
         ByteBuffer bb = ByteBuffer.allocate(16);
         bb.putLong(uuid.getMostSignificantBits());
         bb.putLong(uuid.getLeastSignificantBits());

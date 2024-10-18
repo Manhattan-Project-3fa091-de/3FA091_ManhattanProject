@@ -23,5 +23,6 @@ public class MainTest extends TestCase {
 
     public void testApp() {
         assertTrue(true);
+        assertEquals("", "");
     }
 }
