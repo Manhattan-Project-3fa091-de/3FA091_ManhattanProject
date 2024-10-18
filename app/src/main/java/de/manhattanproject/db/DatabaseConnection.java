@@ -16,56 +16,75 @@ import java.util.stream.Stream;
 public class DatabaseConnection implements IDatabaseConnection {
     @Override
     public IDatabaseConnection openConnection(Properties props) {
-        //Properties
+        //Get properties
         this._dbUrl = props.getProperty("db.url");
         this._dbUser = props.getProperty("db.user");
         this._dbPass = props.getProperty("db.pass");
 
-        //DB
+        //Return this object if connection already established
+        if (this._conn != null) {
+            return this;
+        }
+
+        //Establish connection
         try {
-            if (this._conn != null) {
-                return this;
-            }
             this._conn = DriverManager.getConnection(this._dbUrl, this._dbUser, this._dbPass);
         } catch (SQLException e) {
+            System.err.println("Failed to get database connection: "+e.toString());
+            return null;
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+
         return this;
     }
 
-    public Connection getConnection() {
+    public Connection getConnection() throws SQLException {
+        if (this._conn == null) {
+            throw new SQLException("Connection is not established");
+        }
         return this._conn;
     }
 
     @Override
     public void createAllTables() {
-        try {
-            try (Stream<Path> paths = Files.list(Paths.get("./sql/"))) {
-                paths.forEach(path -> {
-                    try {
-                        String query = new String(Files.readAllBytes(path));
-                        //System.out.println(query);
-                        Statement stmt = this._conn.createStatement();
-                        stmt.executeUpdate(query);
-                    //stmt.execute(query);
-                    } catch (IOException | SQLException e) {
-                        e.printStackTrace();
-                    }
-                });
-                //String query = new String(Files.readAllBytes());
-                //System.out.println(query);
-                //stmt.execute(query);
-            }
+        //Execute SQL files
+        try (Stream<Path> paths = Files.list(Paths.get("./sql/"))) {
+            paths.forEach(path -> {
+                String query;
+
+                //Read SQL file
+                try {
+                    query = new String(Files.readAllBytes(path));
+                } catch (IOException e) {
+                    System.err.println("Failed to read SQL file: "+e.toString());
+                    return;
+                } catch(Exception e) {
+                    e.printStackTrace();
+                    return;
+                }
+
+                //Execute query
+                try {
+                    Statement stmt = this._conn.createStatement();
+                    stmt.executeUpdate(query);
+                } catch (SQLException e) {
+                    System.err.println("Failed to execute SQL statement: "+e.toString());
+                } catch(Exception e) {
+                    e.printStackTrace();
+                    return;
+                }
+            });
         } catch (IOException e) {
+            System.err.println("Failed to get SQL file paths: "+e.toString());
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
     public void truncateAllTables() {
-        //Statement stmt = this._conn.createStatement();
-        //stmt.execute("SET FOREIGN_KEY_CHECKS=0;");
         try (PreparedStatement stmt = this._conn.prepareStatement("SELECT table_name FROM information_schema.tables WHERE table_schema=?")) {
             String catalog = this._conn.getCatalog();
             stmt.setString(1, catalog);

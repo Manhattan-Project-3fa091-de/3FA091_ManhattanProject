@@ -1,10 +1,7 @@
 package de.manhattanproject.db;
 
-import java.sql.SQLException;
-import java.util.NoSuchElementException;
-
 interface IDatabaseInteraction<T> {
-    public void save(T t) throws SQLException, NoSuchElementException;
+    public void save(T t) throws Exception;
     public T load(T t);
     public void delete(T t);
 }

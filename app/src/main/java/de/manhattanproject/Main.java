@@ -1,18 +1,15 @@
 package de.manhattanproject;
 
 import java.util.UUID;
+import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.io.InputStream;
-import java.util.Properties;
+import java.sql.SQLException;
+import java.time.LocalDate;
 import de.manhattanproject.db.DatabaseConnection;
-//import de.manhattanproject.Customer;
-//import de.manhattanproject.db.Customer;
 import de.manhattanproject.model.Gender;
 import de.manhattanproject.model.KindOfMeter;
-import java.time.LocalDate;
-
 
 public class Main {
     public static void main(String[] args) {
@@ -48,13 +45,16 @@ public class Main {
             //Load customer
             System.out.println("Reading customer...");
             de.manhattanproject.model.Customer customerLoad = customerDB.load(customer);
+            if (customerLoad == null) {
+                System.out.println("No customer with ID found: "+customer.getId());
+            }
 
             //Create reading
             System.out.println("Creating reading...");
             de.manhattanproject.model.Reading reading = new de.manhattanproject.model.Reading();
             reading.setId(UUID.randomUUID());
             reading.setComment("Important note");
-            reading.setCustomer(customer);
+            reading.setCustomer(customerLoad);
             reading.setDateOfReading(LocalDate.now());
             reading.setKindOfMeter(KindOfMeter.HEIZUNG);
             reading.setMeterCount(1.2);
@@ -67,19 +67,24 @@ public class Main {
             //Load reading
             System.out.println("Loading reading...");
             de.manhattanproject.model.Reading readingLoad = readingDB.load(reading);
+            if (readingLoad == null) {
+                System.out.println("No reading with ID found: "+reading.getId());
+            }
 
             //Delete customer
-            System.out.println("Deleting customer...");
-            customerDB.delete(customer);
+            //System.out.println("Deleting customer...");
+            //customerDB.delete(customerLoad);
 
             //System.out.println("Deleting reading...");
-            //readingDB.delete(reading);
+            //readingDB.delete(readingLoad);
 
             System.out.println("Closing database connection...");
             conn.closeConnection();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
