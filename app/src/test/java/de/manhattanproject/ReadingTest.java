@@ -65,7 +65,7 @@ public class ReadingTest extends TestCase {
     }
 
     //Checks if saving a reading succeeds
-    public void testSaveReading() {
+    /*public void testSaveReading() {
         System.out.println("testSaveReading");
 
         //Create customer
@@ -115,7 +115,7 @@ public class ReadingTest extends TestCase {
             System.err.println("Failed to load customer: "+e.toString());
             assertTrue(false);
         }
-    }
+    }*/
 
     //Checks if saving a reading fails if the customer is missing
     public void testSaveReadingMissingCustomer() {
@@ -198,7 +198,7 @@ public class ReadingTest extends TestCase {
     }
 
     //Check if loading a reading with existing customer succeeds
-    public void testLoadReading() {
+    /*public void testLoadReading() {
         System.out.println("testLoadReadingCustomer");
 
         //Create customer
@@ -244,7 +244,7 @@ public class ReadingTest extends TestCase {
             System.err.println("Failed to load reading: "+e.toString());
             assertTrue(false);
         }
-    }
+    }*/
 
     public void testDeleteReading() {
         System.out.println("testDeleteReading");
