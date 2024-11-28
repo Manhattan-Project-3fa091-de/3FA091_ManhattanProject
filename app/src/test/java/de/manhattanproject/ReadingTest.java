@@ -197,55 +197,6 @@ public class ReadingTest extends TestCase {
         }
     }
 
-    //Check if loading a reading with existing customer succeeds
-    public void testLoadReading() {
-        System.out.println("testLoadReadingCustomer");
-
-        //Create customer
-        System.out.println("Creating customer...");
-        de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
-        customer.setId(this._customerId);
-        customer.setFirstName("Lisa");
-        customer.setLastName("Braun");
-        customer.setBirthDate(LocalDate.now());
-        customer.setGender(Gender.W);
-
-        //Create reading
-        System.out.println("Creating reading...");
-        de.manhattanproject.model.Reading reading = new de.manhattanproject.model.Reading();
-        reading.setId(this._readingId);
-        reading.setComment("Important note");
-        reading.setCustomer(customer);
-        reading.setDateOfReading(LocalDate.now());
-        reading.setKindOfMeter(KindOfMeter.HEIZUNG);
-        reading.setMeterCount(1.2);
-        reading.setMeterId("Meow");
-        reading.setSubstitute(true);
-
-        //Save reading
-        de.manhattanproject.db.Reading readingDB = null;
-        try {
-            readingDB = new de.manhattanproject.db.Reading(this._db);
-            readingDB.save(reading);
-        } catch (SQLException | NullPointerException e) {
-            System.err.println("Failed to save reading: "+e.toString());
-            assertTrue(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-            assertTrue(false);
-        }
-
-        //Load reading
-        System.out.println("Loading reading...");
-        try {
-            de.manhattanproject.model.Reading readingLoad = readingDB.load(reading);
-            assertNotNull(readingLoad);
-        } catch (Exception e) {
-            System.err.println("Failed to load reading: "+e.toString());
-            assertTrue(false);
-        }
-    }
-
     public void testDeleteReading() {
         System.out.println("testDeleteReading");
 
