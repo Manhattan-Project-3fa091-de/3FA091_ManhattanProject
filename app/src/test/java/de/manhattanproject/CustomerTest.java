@@ -150,6 +150,73 @@ public class CustomerTest extends TestCase {
             assertTrue(false);
         }
     }
+        // Check if loading a customer and a reading succeeds
+        public void testLoadCustomerAndReading() {
+            // Create and save a customer
+            System.out.println("Creating and saving customer...");
+            de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
+            customer.setId(this._customerId);
+            customer.setFirstName("Anna");
+            customer.setLastName("Müller");
+            customer.setBirthDate(LocalDate.now());
+            customer.setGender(Gender.W);
+    
+            try {
+                de.manhattanproject.db.Customer customerDB = new de.manhattanproject.db.Customer(this._db);
+                customerDB.save(customer);
+            } catch (Exception e) {
+                System.err.println("Failed to save customer: " + e.toString());
+                assertTrue(false);
+            }
+    
+            // Load the customer
+            System.out.println("Loading customer...");
+            de.manhattanproject.model.Customer loadedCustomer = null;
+            try {
+                de.manhattanproject.db.Customer customerDB = new de.manhattanproject.db.Customer(this._db);
+                loadedCustomer = customerDB.load(customer);
+                assertNotNull("Loaded customer should not be null", loadedCustomer);
+                assertEquals("Loaded customer should match saved customer", customer.getId(), loadedCustomer.getId());
+            } catch (Exception e) {
+                System.err.println("Failed to load customer: " + e.toString());
+                assertTrue(false);
+            }
+    
+            // Create and save a reading
+            System.out.println("Creating and saving reading...");
+            de.manhattanproject.model.Reading reading = new de.manhattanproject.model.Reading();
+            reading.setId(this._readingId);
+            reading.setComment("Test Reading");
+            reading.setCustomer(loadedCustomer); // Link to the loaded customer
+            reading.setDateOfReading(LocalDate.now());
+            reading.setKindOfMeter(KindOfMeter.STROM);
+            reading.setMeterCount(5.5);
+            reading.setMeterId("Meter123");
+            reading.setSubstitute(false);
+    
+            try {
+                de.manhattanproject.db.Reading readingDB = new de.manhattanproject.db.Reading(this._db);
+                readingDB.save(reading);
+            } catch (Exception e) {
+                System.err.println("Failed to save reading: " + e.toString());
+                assertTrue(false);
+            }
+    
+            // Load the reading
+            System.out.println("Loading reading...");
+            de.manhattanproject.model.Reading loadedReading = null;
+            try {
+                de.manhattanproject.db.Reading readingDB = new de.manhattanproject.db.Reading(this._db);
+                loadedReading = readingDB.load(reading);
+                assertNotNull("Loaded reading should not be null", loadedReading);
+                assertEquals("Loaded reading should match saved reading", reading.getId(), loadedReading.getId());
+                assertEquals("Loaded reading should have correct customer", loadedCustomer.getId(), loadedReading.getCustomer().getId());
+            } catch (Exception e) {
+                System.err.println("Failed to load reading: " + e.toString());
+                assertTrue(false);
+            }
+        }
+    
 
     private DatabaseConnection _db;
     private UUID _customerId;

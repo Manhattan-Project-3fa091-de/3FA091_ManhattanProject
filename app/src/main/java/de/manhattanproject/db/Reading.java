@@ -24,7 +24,8 @@ public class Reading implements IDatabaseInteraction<de.manhattanproject.model.R
 
         //Check if customer exists
         ResultSet rs = null;
-        try (PreparedStatement stmt = this._db.getConnection().prepareStatement("SELECT id FROM customer LIMIT 1")) {
+        try (PreparedStatement stmt = this._db.getConnection().prepareStatement("SELECT id FROM customer WHERE id=? LIMIT 1")) {
+            stmt.setBytes(1, UUID.toBytes(reading.getCustomer().getId()));
             rs = stmt.executeQuery();
             this._db.getConnection().commit();
         } catch (Exception e) {

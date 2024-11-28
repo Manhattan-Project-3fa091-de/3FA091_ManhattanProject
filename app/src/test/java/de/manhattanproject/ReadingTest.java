@@ -65,7 +65,7 @@ public class ReadingTest extends TestCase {
     }
 
     //Checks if saving a reading succeeds
-    public void testSaveReading() {
+    /*public void testSaveReading() {
         System.out.println("testSaveReading");
 
         //Create customer
@@ -115,7 +115,7 @@ public class ReadingTest extends TestCase {
             System.err.println("Failed to load customer: "+e.toString());
             assertTrue(false);
         }
-    }
+    }*/
 
     //Checks if saving a reading fails if the customer is missing
     public void testSaveReadingMissingCustomer() {
@@ -201,10 +201,17 @@ public class ReadingTest extends TestCase {
         System.out.println("testDeleteReading");
 
         try {
+            Customer customer = new Customer();
+            customer.setId(UUID.randomUUID());
+            customer.setFirstName("Hans");
+            customer.setLastName("Peter");
+            customer.setGender(Gender.M);
+            customer.setBirthDate(LocalDate.now());
+
             Reading reading = new Reading();
             reading.setId(UUID.randomUUID());
             reading.setComment("Test");
-            reading.setCustomer(new Customer());
+            reading.setCustomer(customer);
             reading.setDateOfReading(LocalDate.now());
             reading.setKindOfMeter(KindOfMeter.STROM);
             reading.setMeterCount(2.2);
