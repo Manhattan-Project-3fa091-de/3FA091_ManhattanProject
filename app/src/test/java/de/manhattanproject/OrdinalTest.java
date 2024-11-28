@@ -3,7 +3,6 @@ package de.manhattanproject;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import de.manhattanproject.db.UUID;
 import de.manhattanproject.db.Ordinal;
 import de.manhattanproject.model.KindOfMeter;
 

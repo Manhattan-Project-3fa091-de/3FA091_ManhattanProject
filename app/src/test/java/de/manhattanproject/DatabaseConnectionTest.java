@@ -7,10 +7,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import de.manhattanproject.db.UUID;
-import de.manhattanproject.db.Ordinal;
 import de.manhattanproject.db.DatabaseConnection;
-import de.manhattanproject.model.KindOfMeter;
 
 public class DatabaseConnectionTest extends TestCase {
     public static Test suite() {
