@@ -250,10 +250,17 @@ public class ReadingTest extends TestCase {
         System.out.println("testDeleteReading");
 
         try {
+            Customer customer = new Customer();
+            customer.setId(UUID.randomUUID());
+            customer.setFirstName("Hans");
+            customer.setLastName("Peter");
+            customer.setGender(Gender.M);
+            customer.setBirthDate(LocalDate.now());
+
             Reading reading = new Reading();
             reading.setId(UUID.randomUUID());
             reading.setComment("Test");
-            reading.setCustomer(new Customer());
+            reading.setCustomer(customer);
             reading.setDateOfReading(LocalDate.now());
             reading.setKindOfMeter(KindOfMeter.STROM);
             reading.setMeterCount(2.2);

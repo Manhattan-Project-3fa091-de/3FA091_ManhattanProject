@@ -37,7 +37,6 @@ public class Reading implements IDatabaseInteraction<de.manhattanproject.model.R
                 stmt.setBytes(1, UUID.toBytes(reading.getCustomer().getId()));
                 stmt.setString(2, reading.getCustomer().getFirstName());
                 stmt.setString(3, reading.getCustomer().getLastName());
-                System.out.println(reading);
                 stmt.setDate(4, Date.valueOf(reading.getCustomer().getBirthDate()));
                 stmt.setInt(5, reading.getCustomer().getGender().ordinal());
                 stmt.executeUpdate();
