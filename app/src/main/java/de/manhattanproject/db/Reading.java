@@ -17,11 +17,15 @@ public class Reading implements IDatabaseInteraction<de.manhattanproject.model.R
         //Don't allow saving reading without customer
         if (reading.getCustomer() == null) {
             throw new NullPointerException("Customer not set");
+            //Create customer before reading
+            //de.manhattanproject.db.Cusotmer customerDB;
+            //customerDB.save(reading.get)
         }
 
         //Check if customer exists
         ResultSet rs = null;
-        try (PreparedStatement stmt = this._db.getConnection().prepareStatement("SELECT id FROM customer LIMIT 1")) {
+        try (PreparedStatement stmt = this._db.getConnection().prepareStatement("SELECT id FROM customer WHERE id=? LIMIT 1")) {
+            stmt.setBytes(1, UUID.toBytes(reading.getCustomer().getId()));
             rs = stmt.executeQuery();
             this._db.getConnection().commit();
         } catch (Exception e) {
@@ -77,7 +81,7 @@ public class Reading implements IDatabaseInteraction<de.manhattanproject.model.R
             
             readingRes.setId(UUID.toUUID(rs.getBytes(1)));
             readingRes.setComment(rs.getString(2));
-            //readingRes.setCustomer(UUID.asUUID(rsReading.getBytes(3)));
+            //readingRes.setCustomer(readingRes.getCustomer());
             customerId = rs.getBytes(3);
             readingRes.setDateOfReading((rs.getDate(4)).toLocalDate());
             readingRes.setKindOfMeter(Ordinal.toEnum(KindOfMeter.class, rs.getInt(5)));

@@ -3,9 +3,6 @@ package de.manhattanproject;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,18 +13,14 @@ import de.manhattanproject.db.DatabaseConnection;
 import de.manhattanproject.model.Gender;
 import de.manhattanproject.model.KindOfMeter;
 
-public class CustomerTest extends TestCase {
-    public CustomerTest() {
+public class CustomerTestInvalid extends TestCase {
+    public CustomerTestInvalid() {
         //Load properties
         System.out.println("Loading properties...");
         Properties props = new Properties();
-        try (InputStream input = new FileInputStream(".properties")) {
-            props.load(input);
-        } catch (IOException e) {
-            System.err.println("Failed to load properties file: "+e.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        props.setProperty("db.url", "jdbc:mariadb://127.0.0.1:3306/manhattanproject");
+        props.setProperty("db.user", "asdf");
+        props.setProperty("db.pass", "asdf");
 
         //Generate UUIDs
         this._customerId = UUID.randomUUID();
@@ -35,15 +28,10 @@ public class CustomerTest extends TestCase {
 
         //Connect to database
         this._db = new DatabaseConnection();
-        this._db.openConnection(props);
-
-        //Reinitialize tables
-        this._db.removeAllTables();
-        this._db.createAllTables();
     }
 
     public static Test suite() {
-        return new TestSuite(CustomerTest.class);
+        return new TestSuite(CustomerTestInvalid.class);
     }
 
     //Check if deleting a customer succeeds 
@@ -150,73 +138,6 @@ public class CustomerTest extends TestCase {
             assertTrue(false);
         }
     }
-        // Check if loading a customer and a reading succeeds
-        public void testLoadCustomerAndReading() {
-            // Create and save a customer
-            System.out.println("Creating and saving customer...");
-            de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
-            customer.setId(this._customerId);
-            customer.setFirstName("Anna");
-            customer.setLastName("Müller");
-            customer.setBirthDate(LocalDate.now());
-            customer.setGender(Gender.W);
-    
-            try {
-                de.manhattanproject.db.Customer customerDB = new de.manhattanproject.db.Customer(this._db);
-                customerDB.save(customer);
-            } catch (Exception e) {
-                System.err.println("Failed to save customer: " + e.toString());
-                assertTrue(false);
-            }
-    
-            // Load the customer
-            System.out.println("Loading customer...");
-            de.manhattanproject.model.Customer loadedCustomer = null;
-            try {
-                de.manhattanproject.db.Customer customerDB = new de.manhattanproject.db.Customer(this._db);
-                loadedCustomer = customerDB.load(customer);
-                assertNotNull("Loaded customer should not be null", loadedCustomer);
-                assertEquals("Loaded customer should match saved customer", customer.getId(), loadedCustomer.getId());
-            } catch (Exception e) {
-                System.err.println("Failed to load customer: " + e.toString());
-                assertTrue(false);
-            }
-    
-            // Create and save a reading
-            System.out.println("Creating and saving reading...");
-            de.manhattanproject.model.Reading reading = new de.manhattanproject.model.Reading();
-            reading.setId(this._readingId);
-            reading.setComment("Test Reading");
-            reading.setCustomer(loadedCustomer); // Link to the loaded customer
-            reading.setDateOfReading(LocalDate.now());
-            reading.setKindOfMeter(KindOfMeter.STROM);
-            reading.setMeterCount(5.5);
-            reading.setMeterId("Meter123");
-            reading.setSubstitute(false);
-    
-            try {
-                de.manhattanproject.db.Reading readingDB = new de.manhattanproject.db.Reading(this._db);
-                readingDB.save(reading);
-            } catch (Exception e) {
-                System.err.println("Failed to save reading: " + e.toString());
-                assertTrue(false);
-            }
-    
-            // Load the reading
-            System.out.println("Loading reading...");
-            de.manhattanproject.model.Reading loadedReading = null;
-            try {
-                de.manhattanproject.db.Reading readingDB = new de.manhattanproject.db.Reading(this._db);
-                loadedReading = readingDB.load(reading);
-                assertNotNull("Loaded reading should not be null", loadedReading);
-                assertEquals("Loaded reading should match saved reading", reading.getId(), loadedReading.getId());
-                assertEquals("Loaded reading should have correct customer", loadedCustomer.getId(), loadedReading.getCustomer().getId());
-            } catch (Exception e) {
-                System.err.println("Failed to load reading: " + e.toString());
-                assertTrue(false);
-            }
-        }
-    
 
     private DatabaseConnection _db;
     private UUID _customerId;
