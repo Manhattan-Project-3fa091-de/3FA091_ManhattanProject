@@ -68,6 +68,9 @@
           <includes>
             <include>de/manhattanproject/**</include>
           </includes>
+          <excludes>
+            <exclude>de/manhattanproject/Main.class</exclude>
+          </excludes>
         </configuration>
       </plugin>
     </plugins>
