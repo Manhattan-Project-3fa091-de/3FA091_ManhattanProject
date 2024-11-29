@@ -64,58 +64,7 @@ public class ReadingTest extends TestCase {
         assertEquals(now.toString(), reading.printDateOfReading());
     }
 
-    //Checks if saving a reading succeeds
-    /*public void testSaveReading() {
-        System.out.println("testSaveReading");
 
-        //Create customer
-        System.out.println("Creating customer...");
-        de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
-        customer.setId(this._customerId);
-        customer.setFirstName("Hans");
-        customer.setLastName("Peter");
-        customer.setBirthDate(LocalDate.now());
-        customer.setGender(Gender.M);
-
-        System.out.println(customer.getId());
-        System.out.println(customer.getFirstName());
-
-        //Create reading
-        System.out.println("Creating reading...");
-        de.manhattanproject.model.Reading reading = new de.manhattanproject.model.Reading();
-        reading.setId(this._readingId);
-        reading.setComment("Important note");
-        reading.setCustomer(customer);
-        reading.setDateOfReading(LocalDate.now());
-        reading.setKindOfMeter(KindOfMeter.HEIZUNG);
-        reading.setMeterCount(1.2);
-        reading.setMeterId("Meow");
-        reading.setSubstitute(true);
-
-        //Save reading
-        System.out.println("Saving reading...");
-        try {
-            de.manhattanproject.db.Reading readingDB = new de.manhattanproject.db.Reading(this._db);
-            readingDB.save(reading);
-        } catch (SQLException | NullPointerException e) {
-            System.err.println("Failed to save reading: "+e.toString());
-            assertTrue(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-            assertTrue(false);
-        }
-
-        //Load customer
-        System.out.println("Loading customer...");
-        try {
-            de.manhattanproject.db.Customer customerDB = new de.manhattanproject.db.Customer(this._db);
-            de.manhattanproject.model.Customer customerLoad = customerDB.load(customer);
-            assertNotNull(customerLoad);
-        } catch (Exception e) {
-            System.err.println("Failed to load customer: "+e.toString());
-            assertTrue(false);
-        }
-    }*/
 
     //Checks if saving a reading fails if the customer is missing
     public void testSaveReadingMissingCustomer() {
