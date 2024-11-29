@@ -46,7 +46,11 @@ public class CustomerTest extends TestCase {
         return new TestSuite(CustomerTest.class);
     }
 
+    //Database
+
     public void testSaveCustomer() {
+        this._db.truncateAllTables();
+
         //Create customer
         System.out.println("Creating customer...");
         de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
@@ -69,9 +73,13 @@ public class CustomerTest extends TestCase {
             e.printStackTrace();
             assertTrue(false);
         }
+
+        this._db.truncateAllTables();
     }
 
     public void testLoadCustomer() {
+        this._db.truncateAllTables();
+
         //Create customer
         System.out.println("Creating customer...");
         de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
@@ -107,10 +115,14 @@ public class CustomerTest extends TestCase {
             e.printStackTrace();
             assertTrue(false);
         }
+
+        this._db.truncateAllTables();
     }
 
     //Check if deleting a customer succeeds 
     public void testDeleteCustomer() {
+        this._db.truncateAllTables();
+
         //Create customer
         System.out.println("Creating customer...");
         de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
@@ -145,10 +157,14 @@ public class CustomerTest extends TestCase {
             e.printStackTrace();
             assertTrue(false);
         }
+
+        this._db.truncateAllTables();
     }
 
     //Check if customer id reference in readings is set to NULL when a customer is deleted
     public void testDeleteCustomerReadingReference() {
+        this._db.truncateAllTables();
+
         //Create customer
         System.out.println("Creating customer...");
         de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
@@ -225,10 +241,14 @@ public class CustomerTest extends TestCase {
             System.err.println("Failed to load reading: "+e.toString());
             assertTrue(false);
         }
+
+        this._db.truncateAllTables();
     }
 
     // Check if loading a customer and a reading succeeds
     public void testLoadCustomerAndReading() {
+        this._db.truncateAllTables();
+
         // Create and save a customer
         System.out.println("Creating and saving customer...");
         de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
@@ -292,7 +312,11 @@ public class CustomerTest extends TestCase {
             System.err.println("Failed to load reading: " + e.toString());
             assertTrue(false);
         }
+
+        this._db.truncateAllTables();
     }
+
+    //Model
 
     public void testId () {
         de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
