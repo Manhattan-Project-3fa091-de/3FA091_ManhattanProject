@@ -51,7 +51,7 @@ public class DatabaseConnectionTest extends TestCase {
         // Load invalid properties
         System.out.println("Loading invalid properties...");
         Properties props = new Properties();
-        props.setProperty("db.url", "jdbc:mariadb://127.0.0.1:3306/invalid_database");
+        props.setProperty("db.url", "jdbc:mariadb://127.0.0.1:3306/manhattanproject");
         props.setProperty("db.user", "invalid_user");
         props.setProperty("db.pass", "invalid_pass");
 
