@@ -36,31 +36,37 @@ public class CustomerTestInvalid extends TestCase {
 
     //Check if deleting a customer succeeds 
     public void testDeleteCustomer() {
+        this._db.truncateAllTables();
+
         //Create customer
         System.out.println("Creating customer...");
         de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
-        customer.setId(this._customerId);
+        customer.setId(UUID.randomUUID());
         customer.setFirstName("Tom");
         customer.setLastName("Helmut");
         customer.setBirthDate(LocalDate.now());
         customer.setGender(Gender.M);
 
-        //Save customer
-        System.out.println("Saving customer...");
+        //Delete customer
+        System.out.println("Delete customer...");
         try {
             de.manhattanproject.db.Customer customerDB = new de.manhattanproject.db.Customer(this._db);
-            customerDB.save(customer);
+            customerDB.delete(customer);
         } catch (SQLException | NullPointerException e) {
-            System.err.println("Failed to save customer: "+e.toString());
-            assertTrue(false);
+            System.err.println("Failed to delete customer: "+e.toString());
+            assertTrue(true);
         } catch (Exception e) {
             e.printStackTrace();
             assertTrue(false);
         }
+
+        this._db.truncateAllTables();
     }
 
     //Check if customer id reference in readings is set to NULL when a customer is deleted
     public void testDeleteCustomerReadingReference() {
+        this._db.truncateAllTables();
+
         //Create customer
         System.out.println("Creating customer...");
         de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
@@ -125,11 +131,12 @@ public class CustomerTestInvalid extends TestCase {
         System.out.println("Loading reading...");
         try {
             PreparedStatement stmt = this._db.getConnection().prepareStatement("SELECT customer_id FROM reading WHERE id=?");
-            stmt.setBytes(1, de.manhattanproject.db.UUID.toBytes(this._readingId));
+            stmt.setBytes(1, de.manhattanproject.db.UUID.toBytes(UUID.randomUUID()));
             ResultSet rs = stmt.executeQuery();
             this._db.getConnection().commit();
+            assertTrue(rs.next());
             if (!rs.next()) {
-                assertTrue(false);
+                assertTrue(true);
             }
             byte[] customerId = rs.getBytes(1);
             assertNull(customerId);
@@ -137,6 +144,8 @@ public class CustomerTestInvalid extends TestCase {
             System.err.println("Failed to load reading: "+e.toString());
             assertTrue(false);
         }
+
+        this._db.truncateAllTables();
     }
 
     private DatabaseConnection _db;

@@ -46,7 +46,11 @@ public class CustomerTest extends TestCase {
         return new TestSuite(CustomerTest.class);
     }
 
+    //Database
+
     public void testSaveCustomer() {
+        this._db.truncateAllTables();
+
         //Create customer
         System.out.println("Creating customer...");
         de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
@@ -69,9 +73,13 @@ public class CustomerTest extends TestCase {
             e.printStackTrace();
             assertTrue(false);
         }
+
+        this._db.truncateAllTables();
     }
 
     public void testLoadCustomer() {
+        this._db.truncateAllTables();
+
         //Create customer
         System.out.println("Creating customer...");
         de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
@@ -107,10 +115,14 @@ public class CustomerTest extends TestCase {
             e.printStackTrace();
             assertTrue(false);
         }
+
+        this._db.truncateAllTables();
     }
 
     //Check if deleting a customer succeeds 
     public void testDeleteCustomer() {
+        this._db.truncateAllTables();
+
         //Create customer
         System.out.println("Creating customer...");
         de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
@@ -145,10 +157,14 @@ public class CustomerTest extends TestCase {
             e.printStackTrace();
             assertTrue(false);
         }
+
+        this._db.truncateAllTables();
     }
 
     //Check if customer id reference in readings is set to NULL when a customer is deleted
     public void testDeleteCustomerReadingReference() {
+        this._db.truncateAllTables();
+
         //Create customer
         System.out.println("Creating customer...");
         de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
@@ -225,10 +241,14 @@ public class CustomerTest extends TestCase {
             System.err.println("Failed to load reading: "+e.toString());
             assertTrue(false);
         }
+
+        this._db.truncateAllTables();
     }
 
     // Check if loading a customer and a reading succeeds
     public void testLoadCustomerAndReading() {
+        this._db.truncateAllTables();
+
         // Create and save a customer
         System.out.println("Creating and saving customer...");
         de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
@@ -292,6 +312,46 @@ public class CustomerTest extends TestCase {
             System.err.println("Failed to load reading: " + e.toString());
             assertTrue(false);
         }
+
+        this._db.truncateAllTables();
+    }
+
+    //Model
+
+    public void testId () {
+        de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
+        customer.setId(UUID.fromString("e58ed763-928c-4155-bee9-fdbaaadc15f3"));
+        UUID result = customer.getId();
+
+        assertEquals(UUID.fromString("e58ed763-928c-4155-bee9-fdbaaadc15f3"), result);
+    }
+    
+    public void testFirstName () {
+        de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
+        customer.setFirstName("Michi");
+        String result = customer.getFirstName();
+        assertEquals("Michi", result);
+    }
+    
+    public void testLastName () {
+        de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
+        customer.setLastName("Grassl");
+        String result = customer.getLastName();
+        assertEquals("Grassl", result);
+    }
+
+    public void testBirthDate () {
+        de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
+        customer.setBirthDate(LocalDate.of(2024, 10, 18));
+        LocalDate result = customer.getBirthDate();
+        assertEquals(LocalDate.of(2024, 10, 18), result);
+    }
+
+    public void testGender () {
+        de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
+        customer.setGender(Gender.M);
+        Gender result = customer.getGender();
+        assertEquals(Gender.M, result);
     }
 
     private DatabaseConnection _db;

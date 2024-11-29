@@ -12,7 +12,7 @@ import de.manhattanproject.model.KindOfMeter;
 
 public class Main {
     public static void main(String[] args) {
-        //Load properties
+        /*//Load properties
         System.out.println("Loading properties...");
         Properties props = new Properties();
         try (InputStream input = new FileInputStream(".properties")) {
@@ -120,6 +120,9 @@ public class Main {
         }
 
         System.out.println("Closing database connection...");
-        conn.closeConnection();
+        conn.closeConnection();*/
+
+        Server s = new Server();
+        s.startServer();
     }
 }

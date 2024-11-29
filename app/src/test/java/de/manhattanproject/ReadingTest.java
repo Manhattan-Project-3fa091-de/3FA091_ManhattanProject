@@ -69,6 +69,7 @@ public class ReadingTest extends TestCase {
     //Checks if saving a reading fails if the customer is missing
     public void testSaveReadingMissingCustomer() {
         System.out.println("testSaveReadingMissingCustomer");
+        this._db.truncateAllTables();
 
         //Create reading
         System.out.println("Creating reading...");
@@ -95,11 +96,14 @@ public class ReadingTest extends TestCase {
             e.printStackTrace();
             assertTrue(false);
         }
+
+        this._db.truncateAllTables();
     }
 
     //Check if loading a reading succeeds
     public void testLoadReading() {
         System.out.println("testLoadReading");
+        this._db.truncateAllTables();
 
         //Create customer
         System.out.println("Creating customer...");
@@ -144,10 +148,13 @@ public class ReadingTest extends TestCase {
             System.err.println("Failed to load reading: "+e.toString());
             assertTrue(false);
         }
+
+        this._db.truncateAllTables();
     }
 
     public void testDeleteReading() {
         System.out.println("testDeleteReading");
+        this._db.truncateAllTables();
 
         try {
             Customer customer = new Customer();
@@ -183,6 +190,8 @@ public class ReadingTest extends TestCase {
         } catch (NoSuchElementException | SQLException e) {
             e.printStackTrace();
         }
+
+        this._db.truncateAllTables();
     }
 
     private DatabaseConnection _db;

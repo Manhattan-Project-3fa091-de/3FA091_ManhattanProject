@@ -18,4 +18,19 @@ public class UUIDTest extends TestCase {
         System.out.println("Converted UUID: "+uuidConv);
         assertEquals(uuidOrig, uuidConv);
     }
+
+    public void testInvalidLength() {
+        try {
+            byte[] trash = new byte[]{(byte)0x00};
+            UUID.toUUID(trash);
+        } catch (IllegalArgumentException e) {
+            assert(true);
+            return;
+        }
+        assert(false);
+    }
+
+    public void testNullUUID() {
+        assertTrue(java.util.Arrays.equals(UUID.toBytes(null), new byte[0]));
+    }
 }

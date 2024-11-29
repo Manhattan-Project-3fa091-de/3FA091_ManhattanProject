@@ -95,6 +95,7 @@ public class DatabaseConnection implements IDatabaseConnection {
                 PreparedStatement stmtDrop = this._conn.prepareStatement("TRUNCATE TABLE "+table);
                 stmtDrop.executeUpdate();
             }
+            this._conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
             try {
@@ -116,8 +117,8 @@ public class DatabaseConnection implements IDatabaseConnection {
                 String table = rs.getString("table_name");
                 PreparedStatement stmtDrop = this._conn.prepareStatement("DROP TABLE "+table);
                 stmtDrop.executeUpdate();
-                this._conn.commit();
             }
+            this._conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
             try {
