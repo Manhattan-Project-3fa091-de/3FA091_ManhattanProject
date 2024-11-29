@@ -1,5 +1,6 @@
 package de.manhattanproject;
 
+import de.manhattanproject.model.Gender;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -19,5 +20,10 @@ public class OrdinalTest extends TestCase {
     public void testEnumToOrdinal() {
         int t = KindOfMeter.HEIZUNG.ordinal();
         assertEquals(t, 0);
+    }
+
+    public void testOrdinalNull() {
+        Gender gender = Ordinal.toEnum(Gender.class, 10);
+        assertEquals(gender, null);
     }
 }
