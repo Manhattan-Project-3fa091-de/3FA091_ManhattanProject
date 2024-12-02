@@ -77,6 +77,62 @@ public class CustomerTest extends TestCase {
         this._db.truncateAllTables();
     }
 
+    public void testSaveUpdateCustomer() {
+        this._db.truncateAllTables();
+
+        //Create customer
+        System.out.println("Creating customer...");
+        de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
+        customer.setId(this._customerId);
+        customer.setFirstName("Tom");
+        customer.setLastName("Helmut");
+        customer.setBirthDate(LocalDate.now());
+        customer.setGender(Gender.M);
+
+        de.manhattanproject.db.Customer customerDB = new de.manhattanproject.db.Customer(this._db);
+
+        //Save customer
+        System.out.println("Saving customer...");
+        try {
+            customerDB.save(customer);
+        } catch (SQLException | NullPointerException e) {
+            System.err.println("Failed to save customer: "+e.toString());
+            assertTrue(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertTrue(false);
+        }
+
+        //Update customer
+        System.out.println("Updating customer...");
+        try {
+            customer.setFirstName("Braun");
+            customerDB.save(customer);
+        } catch (SQLException | NullPointerException e) {
+            System.err.println("Failed to update customer: "+e.toString());
+            assertTrue(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertTrue(false);
+        }
+
+        //Load customer
+        System.out.println("Loading customer...");
+        try {
+            de.manhattanproject.model.Customer loadCustomer = customerDB.load(customer);
+            assertNotNull(loadCustomer);
+            assertEquals(loadCustomer.getFirstName(), "Braun");
+        } catch (SQLException | NullPointerException e) {
+            System.err.println("Failed to load customer: "+e.toString());
+            assertTrue(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertTrue(false);
+        }
+
+        this._db.truncateAllTables();
+    }
+
     public void testLoadCustomer() {
         this._db.truncateAllTables();
 

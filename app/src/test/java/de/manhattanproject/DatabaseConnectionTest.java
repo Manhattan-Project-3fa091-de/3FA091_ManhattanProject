@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import de.manhattanproject.db.DatabaseConnection;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -123,7 +122,7 @@ public class DatabaseConnectionTest extends TestCase {
     public void testGetConnectionNotEstablished() {
         DatabaseConnection db = new DatabaseConnection();
         try {
-            Connection conn = db.getConnection();
+            db.getConnection();
             fail("Expected SQLException to be thrown due to unestablished connection.");
         } catch (SQLException e) {
             // Expected exception
