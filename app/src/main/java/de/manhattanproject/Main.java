@@ -122,7 +122,6 @@ public class Main {
         System.out.println("Closing database connection...");
         conn.closeConnection();*/
 
-        Server s = new Server();
-        s.startServer();
+        Server.startServer();
     }
 }
