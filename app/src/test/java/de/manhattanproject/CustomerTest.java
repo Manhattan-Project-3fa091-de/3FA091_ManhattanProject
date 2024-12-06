@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.Properties;
 import java.util.UUID;
 import de.manhattanproject.db.DatabaseConnection;
+import de.manhattanproject.db.IDatabaseConnection;
 import de.manhattanproject.model.Gender;
 import de.manhattanproject.model.KindOfMeter;
 
@@ -34,8 +35,8 @@ public class CustomerTest extends TestCase {
         this._readingId = UUID.randomUUID();
 
         //Connect to database
-        this._db = new DatabaseConnection();
-        this._db.openConnection(props);
+        this._db = new DatabaseConnection(props);
+        this._db.connection();
 
         //Reinitialize tables
         this._db.removeAllTables();
@@ -284,10 +285,10 @@ public class CustomerTest extends TestCase {
         //Get all readings by customer id using previously created customer
         System.out.println("Loading reading...");
         try {
-            PreparedStatement stmt = this._db.getConnection().prepareStatement("SELECT customer_id FROM reading WHERE id=?");
+            PreparedStatement stmt = this._db.connection().prepareStatement("SELECT customer_id FROM reading WHERE id=?");
             stmt.setBytes(1, de.manhattanproject.db.UUID.toBytes(this._readingId));
             ResultSet rs = stmt.executeQuery();
-            this._db.getConnection().commit();
+            this._db.connection().commit();
             if (!rs.next()) {
                 assertTrue(false);
             }
@@ -410,7 +411,7 @@ public class CustomerTest extends TestCase {
         assertEquals(Gender.M, result);
     }
 
-    private DatabaseConnection _db;
+    private IDatabaseConnection _db;
     private UUID _customerId;
     private UUID _readingId;
 }

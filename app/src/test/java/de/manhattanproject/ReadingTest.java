@@ -35,8 +35,7 @@ public class ReadingTest extends TestCase {
         this._readingId = UUID.randomUUID();
 
         //Connect to database
-        this._db = new DatabaseConnection();
-        this._db.openConnection(props);
+        this._db = new DatabaseConnection(props);
 
         //Reinitialize tables
         this._db.removeAllTables();

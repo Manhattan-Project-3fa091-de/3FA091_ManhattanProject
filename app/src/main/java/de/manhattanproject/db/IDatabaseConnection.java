@@ -1,11 +1,11 @@
 package de.manhattanproject.db;
 
-import java.util.Properties;
+import java.sql.Connection;
 
-interface IDatabaseConnection {
-    public IDatabaseConnection openConnection(Properties properties);
+public interface IDatabaseConnection {
+    public Connection connection();
     public void createAllTables();
     public void truncateAllTables();
     public void removeAllTables();
-    public void closeConnection();
+    public void close();
 }

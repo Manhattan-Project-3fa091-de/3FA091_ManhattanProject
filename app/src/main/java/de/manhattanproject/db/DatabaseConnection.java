@@ -13,16 +13,23 @@ import java.util.Properties;
 import java.util.stream.Stream;
 
 public class DatabaseConnection implements IDatabaseConnection {
-    @Override
-    public IDatabaseConnection openConnection(Properties props) {
+    private Connection _conn;
+    private String _dbUrl;
+    private String _dbUser;
+    private String _dbPass;
+
+    public DatabaseConnection(Properties props) {
         //Get properties
         this._dbUrl = props.getProperty("db.url");
         this._dbUser = props.getProperty("db.user");
         this._dbPass = props.getProperty("db.pass");
+    }
 
+    @Override
+    public Connection connection() {
         //Return this object if connection already established
         if (this._conn != null) {
-            return this;
+            return this._conn;
         }
 
         //Establish connection
@@ -37,15 +44,15 @@ public class DatabaseConnection implements IDatabaseConnection {
             return null;
         }
 
-        return this;
+        return this._conn;
     }
 
-    public Connection getConnection() throws SQLException {
+    /*public Connection getConnection() throws SQLException {
         if (this._conn == null) {
             throw new SQLException("Connection is not established");
         }
         return this._conn;
-    }
+    }*/
 
     @Override
     public void createAllTables() {
@@ -130,7 +137,7 @@ public class DatabaseConnection implements IDatabaseConnection {
     }
 
     @Override
-    public void closeConnection() {
+    public void close() {
         try {
             this._conn.close();
         } catch (SQLException e) {
@@ -142,9 +149,4 @@ public class DatabaseConnection implements IDatabaseConnection {
             }
         }
     }
-
-    private Connection _conn;
-    private String _dbUrl;
-    private String _dbUser;
-    private String _dbPass;
 }
