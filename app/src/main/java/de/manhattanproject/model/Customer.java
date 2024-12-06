@@ -4,6 +4,13 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public class Customer implements ICustomer {
+    //Attributes
+    private UUID _id;
+    private String _firstName;
+    private String _lastName;
+    private LocalDate _birthDate;
+    private Gender _gender;
+    
     //Setter
     @Override
     public void setId(UUID id) {
@@ -47,11 +54,4 @@ public class Customer implements ICustomer {
     public Gender getGender() {
         return this._gender;
     }
-
-    //Attributes
-    private UUID _id;
-    private String _firstName;
-    private String _lastName;
-    private LocalDate _birthDate;
-    private Gender _gender;
 }

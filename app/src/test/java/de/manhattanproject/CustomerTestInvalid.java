@@ -27,7 +27,7 @@ public class CustomerTestInvalid extends TestCase {
         this._readingId = UUID.randomUUID();
 
         //Connect to database
-        this._db = new DatabaseConnection();
+        this._db = new DatabaseConnection(props);
     }
 
     public static Test suite() {
@@ -130,10 +130,10 @@ public class CustomerTestInvalid extends TestCase {
         //Get all readings by customer id using previously created customer
         System.out.println("Loading reading...");
         try {
-            PreparedStatement stmt = this._db.getConnection().prepareStatement("SELECT customer_id FROM reading WHERE id=?");
+            PreparedStatement stmt = this._db.connection().prepareStatement("SELECT customer_id FROM reading WHERE id=?");
             stmt.setBytes(1, de.manhattanproject.db.UUID.toBytes(UUID.randomUUID()));
             ResultSet rs = stmt.executeQuery();
-            this._db.getConnection().commit();
+            this._db.connection().commit();
             assertTrue(rs.next());
             if (!rs.next()) {
                 assertTrue(true);

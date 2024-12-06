@@ -33,9 +33,8 @@ public class DatabaseConnectionTest extends TestCase {
         }
 
         // Connect to database
-        DatabaseConnection db = new DatabaseConnection();
-        db = (DatabaseConnection) db.openConnection(props);
-        assertNotNull("Database connection should not be null", db);
+        DatabaseConnection db = new DatabaseConnection(props);
+        assertNotNull("Database connection should not be null", db.connection());
 
         // Reinitialize tables
         db.truncateAllTables();
@@ -43,7 +42,7 @@ public class DatabaseConnectionTest extends TestCase {
         db.createAllTables();
 
         // Close connection
-        db.closeConnection();
+        db.close();
     }
 
     public void testDatabaseConnectionInvalid() {
@@ -55,10 +54,8 @@ public class DatabaseConnectionTest extends TestCase {
         props.setProperty("db.pass", "invalid_pass");
 
         // Connect to database
-        DatabaseConnection db = new DatabaseConnection();
-        db = (DatabaseConnection) db.openConnection(props);
-
-        assertNull("Database connection should be null due to invalid credentials", db);
+        DatabaseConnection db = new DatabaseConnection(props);
+        assertNull("Database connection should be null due to invalid credentials", db.connection());
     }
 
     public void testOpenConnectionAlreadyEstablished() {
@@ -69,16 +66,14 @@ public class DatabaseConnectionTest extends TestCase {
         props.setProperty("db.pass", "root");
 
         // Connect to database
-        DatabaseConnection db = new DatabaseConnection();
-        db = (DatabaseConnection) db.openConnection(props);
-        assertNotNull("Database connection should not be null", db);
+        DatabaseConnection db = new DatabaseConnection(props);
+        assertNotNull("Database connection should not be null", db.connection());
 
         // Attempt to open connection again
-        DatabaseConnection dbSecond = (DatabaseConnection) db.openConnection(props);
-        assertEquals("Database connection should be the same instance", db, dbSecond);
+        assertEquals("Database connection should be the same instance", db, db.connection());
 
         // Close connection
-        db.closeConnection();
+        db.close();
     }
 
     public void testCreateAllTablesIOException() {
@@ -89,9 +84,8 @@ public class DatabaseConnectionTest extends TestCase {
         props.setProperty("db.pass", "root");
 
         // Connect to database
-        DatabaseConnection db = new DatabaseConnection();
-        db = (DatabaseConnection) db.openConnection(props);
-        assertNotNull("Database connection should not be null", db);
+        DatabaseConnection db = new DatabaseConnection(props);
+        assertNotNull("Database connection should not be null", db.connection());
 
         // Rename the SQL directory to simulate IOException
         try {
@@ -115,18 +109,7 @@ public class DatabaseConnectionTest extends TestCase {
                 e.printStackTrace();
                 fail("Failed to restore SQL directory.");
             }
-            db.closeConnection();
-        }
-    }
-
-    public void testGetConnectionNotEstablished() {
-        DatabaseConnection db = new DatabaseConnection();
-        try {
-            db.getConnection();
-            fail("Expected SQLException to be thrown due to unestablished connection.");
-        } catch (SQLException e) {
-            // Expected exception
-            assertEquals("Connection is not established", e.getMessage());
+            db.close();
         }
     }
 
@@ -138,13 +121,12 @@ public class DatabaseConnectionTest extends TestCase {
         props.setProperty("db.pass", "root");
 
         // Connect to database
-        DatabaseConnection db = new DatabaseConnection();
-        db = (DatabaseConnection) db.openConnection(props);
-        assertNotNull("Database connection should not be null", db);
+        DatabaseConnection db = new DatabaseConnection(props);
+        assertNotNull("Database connection should not be null", db.connection());
 
         // Simulate exception during close
         try {
-            db.getConnection().close();
+            db.connection().close();
         } catch (SQLException e) {
             e.printStackTrace();
             fail("Failed to close the connection manually.");
@@ -152,7 +134,7 @@ public class DatabaseConnectionTest extends TestCase {
 
         // Now call closeConnection, which should handle the already closed connection
         try {
-            db.closeConnection();
+            db.close();
         } catch (Exception e) {
             e.printStackTrace();
             fail("closeConnection should handle exceptions internally.");

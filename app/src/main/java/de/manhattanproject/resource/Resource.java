@@ -1,16 +1,10 @@
 package de.manhattanproject.resource;
 
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
+import org.glassfish.jersey.server.ResourceConfig;
 
-@Path("v1")
-public class Resource {
-    @GET
-    @Path("test")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String test() {
-        return "BRRR!!!";
+public class Resource extends ResourceConfig {
+    public Resource() {
+        packages("de.manhattanproject.resource");
+        register(org.glassfish.jersey.jackson.JacksonFeature.class);
     }
 }
