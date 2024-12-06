@@ -1,27 +1,33 @@
 package de.manhattanproject.resource;
 
 import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import org.glassfish.jersey.server.ResourceConfig;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import de.manhattanproject.db.DatabaseConnection;
-import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
-import de.manhattanproject.db.IDatabaseConnection;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+import de.manhattanproject.db.DatabaseConnection;
 
 @Path("v1")
 public class Customer {
     de.manhattanproject.db.Customer _db;
 
-    public Customer(IDatabaseConnection conn) {
-       this._db = new de.manhattanproject.db.Customer(conn);
+    public Customer() {
+        System.out.println("Loading properties...");
+        Properties props = new Properties();
+        try (InputStream input = new FileInputStream(".properties")) {
+            props.load(input);
+        } catch (IOException e) {
+            System.err.println("Failed to load properties file: "+e.toString());
+            return;
+        }
+
+        System.out.println("Connecting to database...");
+        DatabaseConnection conn = new DatabaseConnection(props);
+        this._db = new de.manhattanproject.db.Customer(conn);
     }
 
     @GET
@@ -30,7 +36,7 @@ public class Customer {
     public de.manhattanproject.model.Customer test() throws Exception {
         de.manhattanproject.model.Customer customer = new de.manhattanproject.model.Customer();
         customer.setFirstName("Hubert");
-        return this._db.load(customer);
+        return customer;
     }
 
     /*@GET

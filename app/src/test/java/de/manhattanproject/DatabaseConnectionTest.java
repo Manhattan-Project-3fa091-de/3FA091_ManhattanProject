@@ -7,11 +7,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import java.util.UUID;
-
 import de.manhattanproject.db.DatabaseConnection;
-import de.manhattanproject.db.IDatabaseConnection;
-
 import java.sql.SQLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
